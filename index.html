@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-  <title>ЛАНЧИН — первый игровой срез</title>
+  <title>ЛАНЧИН — демо-версия</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     :root{color-scheme:dark}
@@ -221,6 +221,7 @@
     const ATTACK_SIDE = 26;
     const ATTACK_DAMAGE = 17;
     const ENEMY_CONTACT_DAMAGE = 12;
+    const MAX_FRAME_TIME = 0.033;
     const keys = new Set();
     const touchState = { up:false, down:false, left:false, right:false, attack:false, dash:false };
     const state = {
@@ -424,7 +425,7 @@
       ui.result.classList.remove('hidden');
       ui.resultTitle.textContent = win ? 'ПОБЕДА' : 'ПАДЕНИЕ';
       ui.resultText.textContent = win
-        ? `Ты собрал ${state.player.collected} сигила(ов), удержал Ланчин и добрался до врат за ${state.time.toFixed(1)} секунд.`
+        ? `Ты собрал ${state.player.collected} сигилов, удержал Ланчин и добрался до врат за ${state.time.toFixed(1)} секунд.`
         : `Тени прорвали дозор. Собрано сигилов: ${state.player.collected}/3. Попробуй ещё раз и держи дистанцию.`;
     }
 
@@ -736,7 +737,7 @@
 
     let last = performance.now();
     function loop(now) {
-      const dt = Math.min(0.033, (now - last) / 1000);
+      const dt = Math.min(MAX_FRAME_TIME, (now - last) / 1000);
       last = now;
       update(dt);
       render();
@@ -755,8 +756,16 @@
 
     function ensureAudio() {
       if (!state.soundOn) return null;
-      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
+      try {
+        const AudioCtor = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtor) return null;
+        if (!audioCtx) audioCtx = new AudioCtor();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+      } catch (_) {
+        state.soundOn = false;
+        ui.soundBtn.textContent = 'ЗВУК: НЕТ';
+        return null;
+      }
       return audioCtx;
     }
 
@@ -823,7 +832,7 @@
 
     document.addEventListener('keydown', event => {
       keys.add(event.code);
-      if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(event.code)) event.preventDefault();
+      if (state.screen === 'playing' && ['ArrowUp','ArrowDown','ArrowLeft','ArrowRight','Space'].includes(event.code)) event.preventDefault();
     }, { passive:false });
     document.addEventListener('keyup', event => {
       keys.delete(event.code);
