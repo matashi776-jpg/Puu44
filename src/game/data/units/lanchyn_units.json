@@ -1,0 +1,35 @@
+[
+  {
+    "id": "nazar-ward",
+    "name": "Nazar Ward",
+    "spriteKey": "unit-nazar-ward",
+    "faction": "Lanchyn",
+    "role": "shield line",
+    "attack": 5,
+    "defense": 7,
+    "faith": 4,
+    "summary": "A censer-hook bearer trained to hold a narrow breach."
+  },
+  {
+    "id": "smoke-reader",
+    "name": "Smoke Reader",
+    "spriteKey": "unit-smoke-reader",
+    "faction": "Lanchyn",
+    "role": "hex support",
+    "attack": 4,
+    "defense": 3,
+    "faith": 7,
+    "summary": "Interprets the ash line before it turns hostile."
+  },
+  {
+    "id": "thread-keeper",
+    "name": "Thread Keeper",
+    "spriteKey": "unit-thread-keeper",
+    "faction": "Lanchyn",
+    "role": "ritual utility",
+    "attack": 3,
+    "defense": 4,
+    "faith": 8,
+    "summary": "Carries witness cords, prayer knots, and sealed labels."
+  }
+]

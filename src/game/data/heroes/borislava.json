@@ -1,0 +1,14 @@
+{
+  "id": "borislava",
+  "name": "Borislava",
+  "title": "Barrier Scout of the Grave Orchard",
+  "portraitKey": "portrait-borislava",
+  "affinity": "Memory",
+  "battleRole": "mobile flanker and omen caller",
+  "worldRole": "pathfinder, scavenger, and local witness",
+  "hp": 16,
+  "faith": 11,
+  "will": 14,
+  "threads": 4,
+  "summary": "Borislava is quick enough to outrun bad bells and stubborn enough to come back with proof. She knows where the land still breathes under the masonry."
+}

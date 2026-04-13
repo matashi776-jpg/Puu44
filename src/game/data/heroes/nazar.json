@@ -1,0 +1,14 @@
+{
+  "id": "nazar",
+  "name": "Nazar",
+  "title": "Censer-Bearer of Lanchyn",
+  "portraitKey": "portrait-nazar",
+  "affinity": "Smoke",
+  "battleRole": "frontline anchor and ward breaker",
+  "worldRole": "route witness and ritual escort",
+  "hp": 18,
+  "faith": 12,
+  "will": 9,
+  "threads": 3,
+  "summary": "Nazar carries soot and prayer into places where names curdle. He is the first to test a threshold and the last to step away from a sealed door."
+}

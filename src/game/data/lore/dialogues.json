@@ -1,0 +1,19 @@
+{
+  "mainMenuIntro": "Lanchyn stands between breathing fields and a mausoleum logic that wants every path to end in stone. This first repository foundation keeps the names, tone, and route structure clear while leaving space for final combat, authored events, and custom content.",
+  "worldMapLocations": {
+    "shrine-road": "A narrow track where wax drips onto wet soil. Local carriers still leave thread offerings here before dawn.",
+    "grave-orchard": "The orchard keeps growing around markers that should have stopped roots years ago. Borislava trusts the birds here more than the bells.",
+    "barrier-crossing": "A seam where prayer smoke bends sideways and dead masonry starts thinking in commands."
+  },
+  "battlePrompts": {
+    "opening": "A placeholder encounter forms around the selected location. This scene confirms scene flow, keyboard input, map loading, and UI scaffolding.",
+    "placeholder": "The command resolves as a temporary stub. Real initiative, damage, and ritual rules belong to a later phase.",
+    "victory": "The party withdraws to the world map. Replace this retreat stub with proper battle resolution later."
+  },
+  "credits": [
+    "Lead direction: original dark fantasy / folk horror tactical RPG foundation for Mausoleum 2.2: Lanchyn.",
+    "This repository currently ships only safe placeholder visuals, placeholder audio, placeholder maps, and handwritten data stubs.",
+    "No borrowed Heroes of Might and Magic III assets, code, names, factions, or UI layouts are used here.",
+    "Next work should focus on authored maps, turn resolution, hero progression, rituals, relic systems, and final art/audio replacement."
+  ]
+}

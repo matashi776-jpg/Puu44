@@ -1,0 +1,23 @@
+[
+  {
+    "id": "ash-circle",
+    "name": "Ash Circle",
+    "cost": "1 thread, 1 ember",
+    "domain": "Barrier",
+    "summary": "Marks a safe pause between living soil and dead thresholds. Placeholder effect only in this foundation build."
+  },
+  {
+    "id": "name-binding",
+    "name": "Name Binding",
+    "cost": "2 faith",
+    "domain": "Memory",
+    "summary": "Pins a hostile echo to the last honest name it heard. Placeholder record only."
+  },
+  {
+    "id": "smoke-wake",
+    "name": "Smoke Wake",
+    "cost": "1 censer charge",
+    "domain": "Pathfinding",
+    "summary": "Draws a brief route through stale air and unsteady masonry. Placeholder record only."
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "id": "lantern-thread",
+    "name": "Lantern Thread",
+    "slot": "hand",
+    "effect": "Improves scouting clarity near ritual sites. Placeholder item logic."
+  },
+  {
+    "id": "ancestor-nail",
+    "name": "Ancestor Nail",
+    "slot": "belt",
+    "effect": "Helps hold a prayer seal against weak structure spirits. Placeholder item logic."
+  },
+  {
+    "id": "widows-bead",
+    "name": "Widow's Bead",
+    "slot": "neck",
+    "effect": "Softens the first morale shock in a hostile chamber. Placeholder item logic."
+  }
+]

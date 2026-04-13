@@ -1,0 +1,14 @@
+{
+  "id": "marta",
+  "name": "Marta",
+  "title": "Keeper of Ash Threads",
+  "portraitKey": "portrait-marta",
+  "affinity": "Thread",
+  "battleRole": "support tactician and fate binder",
+  "worldRole": "memory reader and dialogue anchor",
+  "hp": 14,
+  "faith": 15,
+  "will": 13,
+  "threads": 5,
+  "summary": "Marta listens for the private stitch inside every oath. She remembers who spoke a name honestly and who dragged it through the mud."
+}

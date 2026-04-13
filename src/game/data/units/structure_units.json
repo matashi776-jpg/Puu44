@@ -1,0 +1,35 @@
+[
+  {
+    "id": "grave-warden",
+    "name": "Grave Warden",
+    "spriteKey": "unit-grave-warden",
+    "faction": "Dead Structure",
+    "role": "heavy obstruction",
+    "attack": 6,
+    "defense": 7,
+    "faith": 0,
+    "summary": "A mailed corpse lashed back into service by old stone orders."
+  },
+  {
+    "id": "knotling",
+    "name": "Knotling",
+    "spriteKey": "unit-knotling",
+    "faction": "Dead Structure",
+    "role": "harasser",
+    "attack": 4,
+    "defense": 2,
+    "faith": 0,
+    "summary": "A scrambling servant made from rope, nails, and a little grudge."
+  },
+  {
+    "id": "mourner",
+    "name": "Mourner Bell",
+    "spriteKey": "unit-mourner",
+    "faction": "Dead Structure",
+    "role": "morale pressure",
+    "attack": 3,
+    "defense": 4,
+    "faith": 0,
+    "summary": "A cracked bell housing that remembers funerals better than mercy."
+  }
+]

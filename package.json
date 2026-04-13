@@ -1,0 +1,20 @@
+{
+  "name": "mausoleum-2-2-lanchyn",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Original Phaser 3 + TypeScript + Vite foundation for Mausoleum 2.2: Lanchyn.",
+  "scripts": {
+    "dev": "vite --config vite/config.dev.mjs",
+    "build": "tsc --noEmit && vite build --config vite/config.prod.mjs",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "phaser": "3.90.0"
+  },
+  "devDependencies": {
+    "typescript": "6.0.2",
+    "vite": "8.0.8"
+  }
+}
