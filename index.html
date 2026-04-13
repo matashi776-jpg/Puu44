@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-  <title>ЛАНЧИН — первый срез</title>
+  <title>ЛАНЧИН — первый игровой срез</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     :root{color-scheme:dark}
@@ -164,7 +164,7 @@
     </div>
     <div id="menu" class="overlay">
       <h1>ЛАНЧИН</h1>
-      <div class="subtitle">ПЕРВЫЙ ИГРАБЕЛЬНЫЙ СРЕЗ</div>
+      <div class="subtitle">ПЕРВЫЙ ИГРОВОЙ СРЕЗ</div>
       <div class="panel">
         Собери 3 сигила у алтарей, отбейся от теней и открой северные врата.
         Это полностью рабочая первая версия: есть пиксель-арт, враги, победа/поражение и живая мелодия.
@@ -214,6 +214,13 @@
     const TILE = 32;
     const WORLD = 20;
     const WORLD_PX = TILE * WORLD;
+    const DASH_COST = 26;
+    const DASH_TIME = 0.18;
+    const ATTACK_TIME = 0.32;
+    const ATTACK_REACH = 42;
+    const ATTACK_SIDE = 26;
+    const ATTACK_DAMAGE = 17;
+    const ENEMY_CONTACT_DAMAGE = 12;
     const keys = new Set();
     const touchState = { up:false, down:false, left:false, right:false, attack:false, dash:false };
     const state = {
@@ -409,6 +416,7 @@
       ui.result.classList.add('hidden');
       ui.hud.classList.add('hidden');
       ui.touch.classList.add('hidden');
+      ui.message.classList.remove('show');
     }
 
     function finishGame(win) {
@@ -483,16 +491,16 @@
       const ny = p.y + dy;
       if (canMoveTo(p.x, ny, p.size)) p.y = ny;
 
-      if ((keys.has('ShiftLeft') || keys.has('ShiftRight') || touchState.dash) && p.dashTimer === 0 && p.mana >= 26) {
-        p.dashTimer = 0.18;
-        p.mana -= 26;
+      if ((keys.has('ShiftLeft') || keys.has('ShiftRight') || touchState.dash) && p.dashTimer === 0 && p.mana >= DASH_COST) {
+        p.dashTimer = DASH_TIME;
+        p.mana -= DASH_COST;
         touchState.dash = false;
         burst(p.x + p.size / 2, p.y + p.size / 2, '#b8a6ff', 10);
         if (state.soundOn) playSfx([240, 360, 200], 0.08, 'triangle', 0.04);
       }
 
       if ((keys.has('Space') || keys.has('Enter') || touchState.attack) && p.attackTimer === 0) {
-        p.attackTimer = 0.32;
+        p.attackTimer = ATTACK_TIME;
         touchState.attack = false;
         performAttack();
       }
@@ -523,7 +531,6 @@
 
     function performAttack() {
       const p = state.player;
-      const reach = 42;
       const originX = p.x + p.size / 2;
       const originY = p.y + p.size / 2;
       let hit = false;
@@ -535,8 +542,8 @@
         const dy = ey - originY;
         const forward = p.facing === 'right' ? dx : p.facing === 'left' ? -dx : p.facing === 'down' ? dy : -dy;
         const side = p.facing === 'left' || p.facing === 'right' ? Math.abs(dy) : Math.abs(dx);
-        if (forward > -8 && forward < reach && side < 26) {
-          enemy.hp -= 17;
+        if (forward > -8 && forward < ATTACK_REACH && side < ATTACK_SIDE) {
+          enemy.hp -= ATTACK_DAMAGE;
           enemy.phase += 0.7;
           burst(ex, ey, '#ffffff', 6);
           hit = true;
@@ -572,7 +579,7 @@
           if (canMoveTo(enemy.x, enemy.y + driftY, enemy.size)) enemy.y += driftY;
         }
         if (rectsOverlap(p.x, p.y, p.size, p.size, enemy.x, enemy.y, enemy.size, enemy.size) && p.hitCooldown === 0 && enemy.attackCd === 0) {
-          p.hp -= 12;
+          p.hp -= ENEMY_CONTACT_DAMAGE;
           p.hitCooldown = 0.85;
           enemy.attackCd = 0.8;
           burst(p.x + p.size / 2, p.y + p.size / 2, '#ff7a7a', 12);
