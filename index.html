@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-  <title>ЛАНЧИН — демо-версия</title>
+  <title>ЛАНЧИН — 220 лет на черте</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     :root{color-scheme:dark}
@@ -164,7 +164,7 @@
     </div>
     <div id="menu" class="overlay">
       <h1>ЛАНЧИН</h1>
-      <div class="subtitle">ПЕРВЫЙ ИГРОВОЙ СРЕЗ</div>
+      <div class="subtitle">220 ЛЕТ НА ЧЕРТЕ</div>
       <div class="panel">
         Собери 3 сигила у алтарей, отбейся от теней и открой северные врата.
         Это полностью рабочая первая версия: есть пиксель-арт, враги, победа/поражение и живая мелодия.
@@ -192,6 +192,9 @@
     const canvas = document.getElementById('game');
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false;
+    ctx.webkitImageSmoothingEnabled = false;
+    ctx.mozImageSmoothingEnabled = false;
+    ctx.msImageSmoothingEnabled = false;
 
     const ui = {
       hud: document.getElementById('hud'),
@@ -221,7 +224,8 @@
     const ATTACK_SIDE = 26;
     const ATTACK_DAMAGE = 17;
     const ENEMY_CONTACT_DAMAGE = 12;
-    const MAX_FRAME_TIME = 0.033;
+    const MAX_DELTA_TIME = 0.033;
+    const MUSIC_NOTE_INTERVAL_MS = 190;
     const keys = new Set();
     const touchState = { up:false, down:false, left:false, right:false, attack:false, dash:false };
     const state = {
@@ -735,9 +739,14 @@
       }
     }
 
-    let last = performance.now();
+    let last = 0;
     function loop(now) {
-      const dt = Math.min(MAX_FRAME_TIME, (now - last) / 1000);
+      if (last === 0) {
+        last = now;
+        requestAnimationFrame(loop);
+        return;
+      }
+      const dt = Math.min(MAX_DELTA_TIME, (now - last) / 1000);
       last = now;
       update(dt);
       render();
@@ -800,7 +809,7 @@
         playTone(freq, len, 'triangle', 0.035, 0);
         playTone(freq / 2, Math.max(0.12, len - 0.04), 'sine', 0.018, 0);
         musicTick += 1;
-      }, 190);
+      }, MUSIC_NOTE_INTERVAL_MS);
     }
 
     function stopMusic() {
