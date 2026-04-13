@@ -50,8 +50,13 @@ export class WorldMapScene extends Scene {
 
     const objectLayer = map.getObjectLayer('locations');
     this.locations = (objectLayer?.objects ?? []).map((object) => {
-      const locationId = String(object.properties?.find((property) => property.name === 'locationId')?.value ?? object.name ?? 'unknown');
-      const marker = this.add.rectangle(56 + object.x * 2, 86 + object.y * 2, 12, 12, 0x82604d);
+      const locationProperty = Array.isArray(object.properties)
+        ? object.properties.find((property: { name: string; value: unknown }) => property.name === 'locationId')
+        : undefined;
+      const objectX = object.x ?? 0;
+      const objectY = object.y ?? 0;
+      const locationId = String(locationProperty?.value ?? object.name ?? 'unknown');
+      const marker = this.add.rectangle(56 + objectX * 2, 86 + objectY * 2, 12, 12, 0x82604d);
       const label = this.add.text(marker.x + 10, marker.y - 16, object.name ?? 'Unknown', {
         fontFamily: 'monospace',
         fontSize: '11px',
@@ -89,7 +94,9 @@ export class WorldMapScene extends Scene {
 
     addHintText(this, 48, 468, 'Move between marked sites with ← → / A D. Enter or B opens the placeholder battle scene. H opens heroes, R opens rituals, Esc returns to menu.\nTODO: Replace placeholder map art, add route logic, events, and authored node content.');
 
-    this.updateSelection();
+    if (this.locations.length > 0) {
+      this.updateSelection();
+    }
   }
 
   update(): void {
@@ -122,6 +129,11 @@ export class WorldMapScene extends Scene {
   }
 
   private updateSelection(): void {
+    if (this.locations.length === 0) {
+      this.detailText.setText('No world map locations are registered yet.');
+      return;
+    }
+
     this.locations.forEach((location, index) => {
       const isSelected = index === this.selectedIndex;
       location.marker.setFillStyle(isSelected ? 0xd1a269 : 0x82604d);

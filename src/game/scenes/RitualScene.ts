@@ -1,16 +1,17 @@
 import { Scene } from 'phaser';
 import { SceneKeys } from '../config/sceneKeys';
+import type { SceneKey } from '../config/sceneKeys';
 import { createPanel, addHintText } from '../core/ui';
 import { gameDatabase } from '../systems/GameDatabase';
 import { NavigationKeys } from '../systems/NavigationKeys';
 
 interface RitualSceneData {
-  returnScene?: string;
+  returnScene?: SceneKey;
 }
 
 export class RitualScene extends Scene {
   private navigation!: NavigationKeys;
-  private returnScene = SceneKeys.MainMenu;
+  private returnScene: SceneKey = SceneKeys.MainMenu;
   private selectedIndex = 0;
   private ritualTexts: Phaser.GameObjects.Text[] = [];
   private detailText!: Phaser.GameObjects.Text;
