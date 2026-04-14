@@ -195,7 +195,7 @@
       <div class="panel" id="resultText"></div>
       <div class="actions">
         <button id="restartBtn">Play again</button>
-        <button id="menuBtn">Back to map</button>
+        <button id="menuBtn">Back to menu</button>
       </div>
     </div>
   </div>
@@ -751,8 +751,7 @@
 
       if (p.attackTimer > 0) {
         const attackSize = 42;
-        let ax = p.x;
-        let ay = p.y;
+        let ax = p.x, ay = p.y;
         if (p.facing === 'right') ax += 20;
         if (p.facing === 'left') ax -= 20;
         if (p.facing === 'down') ay += 20;
