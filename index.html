@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-  <title>ЛАНЧИН — 220 лет на черте</title>
+  <title>Bannerfall — tiny fantasy campaign</title>
   <style>
     *{box-sizing:border-box;margin:0;padding:0}
     :root{color-scheme:dark}
@@ -12,9 +12,11 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      background:radial-gradient(circle at top,#2a1747 0%,#09050f 60%,#020204 100%);
-      font-family:"Courier New",monospace;
-      color:#efe7ff;
+      background:
+        radial-gradient(circle at top,#f7d38f 0%,rgba(247,211,143,.16) 20%,transparent 40%),
+        linear-gradient(180deg,#476789 0%,#16283c 44%,#0c121a 100%);
+      font-family:"Trebuchet MS","Verdana",sans-serif;
+      color:#f8edd4;
       overflow:hidden;
       touch-action:none;
     }
@@ -24,9 +26,9 @@
       max-width:720px;
       max-height:720px;
       position:relative;
-      border:2px solid #5f36a8;
-      box-shadow:0 0 40px rgba(129,93,219,.35);
-      background:#0d0815;
+      border:3px solid #c9a15b;
+      box-shadow:0 0 0 2px #5c3d1c,0 26px 60px rgba(8,10,14,.45);
+      background:#102031;
       overflow:hidden;
     }
     canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
@@ -39,34 +41,43 @@
       justify-content:center;
       padding:24px;
       text-align:center;
-      background:linear-gradient(180deg,rgba(9,5,15,.72),rgba(4,3,8,.96));
+      background:linear-gradient(180deg,rgba(15,23,33,.56),rgba(8,13,20,.95));
       z-index:3;
       gap:14px;
     }
     .hidden{display:none!important}
-    h1{font-size:clamp(28px,6vw,48px);letter-spacing:4px;color:#d3c1ff;text-shadow:0 0 20px rgba(174,140,255,.45)}
-    .subtitle{font-size:12px;letter-spacing:3px;color:#8d71c9}
+    h1{
+      font-size:clamp(30px,6vw,56px);
+      letter-spacing:5px;
+      color:#f8d58c;
+      text-shadow:0 2px 0 #70491e,0 0 18px rgba(255,220,143,.22);
+    }
+    .subtitle{font-size:12px;letter-spacing:4px;color:#c8d4de;text-transform:uppercase}
     .panel{
-      max-width:460px;
-      padding:16px;
-      border:1px solid #4f3393;
-      background:rgba(18,10,30,.78);
-      line-height:1.7;
+      max-width:500px;
+      padding:18px;
+      border:1px solid #bd9150;
+      background:linear-gradient(180deg,rgba(38,29,19,.93),rgba(22,18,14,.88));
+      box-shadow:inset 0 0 0 2px rgba(239,209,144,.11);
+      line-height:1.65;
       font-size:13px;
+      color:#f4e2b7;
     }
     .actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
     button{
-      border:1px solid #7753c7;
-      background:linear-gradient(180deg,#2f1d57,#130c24);
-      color:#f4ecff;
+      border:1px solid #d5b16d;
+      background:linear-gradient(180deg,#705431,#3b2b19);
+      color:#fff1d0;
       padding:12px 18px;
       font:inherit;
       letter-spacing:1px;
       cursor:pointer;
-      min-width:150px;
+      min-width:165px;
+      text-transform:uppercase;
       transition:transform .12s ease,filter .12s ease;
+      box-shadow:inset 0 1px 0 rgba(255,236,188,.24);
     }
-    button:hover,button:active{transform:translateY(-1px);filter:brightness(1.12)}
+    button:hover,button:active{transform:translateY(-1px);filter:brightness(1.08)}
     #hud{
       position:absolute;
       top:0;
@@ -77,14 +88,15 @@
       justify-content:space-between;
       gap:12px;
       padding:10px 12px;
-      background:linear-gradient(180deg,rgba(8,6,16,.95),rgba(8,6,16,.45));
+      background:linear-gradient(180deg,rgba(31,22,13,.95),rgba(31,22,13,.34));
+      color:#f7ecd2;
       font-size:12px;
       pointer-events:none;
     }
     #hud .left,#hud .right{display:flex;flex-direction:column;gap:5px}
-    .bar{width:180px;height:12px;border:1px solid #4d357c;background:#110d1d;position:relative}
-    .fill{height:100%;background:linear-gradient(90deg,#47d17c,#74f5a2);width:100%}
-    .mana{background:linear-gradient(90deg,#5f6dff,#aa88ff)}
+    .bar{width:182px;height:12px;border:1px solid #7f5b2c;background:#22170d;position:relative}
+    .fill{height:100%;background:linear-gradient(90deg,#c94a3f,#f1a56e);width:100%}
+    .mana{background:linear-gradient(90deg,#357fd1,#88d0ff)}
     #message{
       position:absolute;
       left:50%;
@@ -92,8 +104,9 @@
       transform:translateX(-50%);
       z-index:2;
       padding:8px 12px;
-      background:rgba(17,11,30,.84);
-      border:1px solid #5e42a4;
+      background:rgba(29,21,12,.9);
+      border:1px solid #bf9550;
+      color:#ffe7b0;
       font-size:12px;
       min-width:min(80%,460px);
       text-align:center;
@@ -116,19 +129,20 @@
     .touch-pad{display:grid;grid-template-columns:56px 56px 56px;grid-template-rows:56px 56px 56px;grid-template-areas:". up ." "left down right" ". . ."}
     .touch-btn{
       width:56px;height:56px;border-radius:12px;
-      border:1px solid rgba(140,111,218,.7);
-      background:rgba(24,14,41,.72);
-      color:#fff;font-size:18px
+      border:1px solid rgba(223,192,129,.74);
+      background:rgba(68,50,28,.84);
+      color:#fff4d3;
+      font-size:18px;
     }
     .touch-btn[data-dir="up"]{grid-area:up}
     .touch-btn[data-dir="left"]{grid-area:left}
     .touch-btn[data-dir="down"]{grid-area:down}
     .touch-btn[data-dir="right"]{grid-area:right}
     .touch-actions{align-items:flex-end}
-    .touch-actions .touch-btn{width:74px;height:74px;border-radius:50%;font-size:14px;font-weight:bold}
-    #credits{font-size:11px;color:#9e88d8}
-    @media (max-width: 700px){
-      .bar{width:120px}
+    .touch-actions .touch-btn{width:74px;height:74px;border-radius:50%;font-size:13px;font-weight:bold}
+    #credits{font-size:11px;color:#d8c394}
+    @media (max-width:700px){
+      .bar{width:124px}
       #hud{font-size:10px}
     }
   </style>
@@ -138,15 +152,15 @@
     <canvas id="game" width="640" height="640"></canvas>
     <div id="hud" class="hidden">
       <div class="left">
-        <div>HP <span id="hpText"></span></div>
+        <div>ARMY <span id="hpText"></span></div>
         <div class="bar"><div id="hpFill" class="fill"></div></div>
-        <div>ЭФИР <span id="manaText"></span></div>
+        <div>SPELLS <span id="manaText"></span></div>
         <div class="bar"><div id="manaFill" class="fill mana"></div></div>
       </div>
       <div class="right">
-        <div>СИГИЛЫ: <span id="sigilText">0/3</span></div>
-        <div>ВРАГИ: <span id="enemyText">0</span></div>
-        <div>ВРЕМЯ: <span id="timeText">0.0</span>s</div>
+        <div>RELICS: <span id="sigilText">0/3</span></div>
+        <div>FOES: <span id="enemyText">0</span></div>
+        <div>DAY: <span id="timeText">0.0</span></div>
       </div>
     </div>
     <div id="message"></div>
@@ -158,30 +172,30 @@
         <button class="touch-btn" data-dir="right">▶</button>
       </div>
       <div class="touch-actions">
-        <button class="touch-btn" id="attackBtn">УДАР</button>
-        <button class="touch-btn" id="dashBtn">РЫВОК</button>
+        <button class="touch-btn" id="attackBtn">SLASH</button>
+        <button class="touch-btn" id="dashBtn">CHARGE</button>
       </div>
     </div>
     <div id="menu" class="overlay">
-      <h1>ЛАНЧИН</h1>
-      <div class="subtitle">220 ЛЕТ НА ЧЕРТЕ</div>
+      <h1>BANNERFALL</h1>
+      <div class="subtitle">tiny fantasy campaign</div>
       <div class="panel">
-        Собери 3 сигила у алтарей, отбейся от теней и открой северные врата.
-        Это полностью рабочая первая версия: есть пиксель-арт, враги, победа/поражение и живая мелодия.
+        Ride out from Dawnwatch, gather three relic banners, and break into the border keep before roaming monsters shatter your army.
+        This remake keeps the game short and self-contained, but pushes the whole screen toward a brighter classic fantasy strategy feel.
       </div>
       <div class="actions">
-        <button id="startBtn">▶ НАЧАТЬ ИГРУ</button>
-        <button id="howBtn">КАК ИГРАТЬ</button>
-        <button id="soundBtn">ЗВУК: ВКЛ</button>
+        <button id="startBtn">▶ Start campaign</button>
+        <button id="howBtn">How to play</button>
+        <button id="soundBtn">Sound: on</button>
       </div>
-      <div id="credits">Управление: WASD / стрелки • Пробел / Enter — удар • Shift — рывок</div>
+      <div id="credits">Controls: WASD / arrows • Space / Enter = slash • Shift = charge</div>
     </div>
     <div id="result" class="overlay hidden">
-      <h1 id="resultTitle">ПОБЕДА</h1>
+      <h1 id="resultTitle">VICTORY</h1>
       <div class="panel" id="resultText"></div>
       <div class="actions">
-        <button id="restartBtn">СЫГРАТЬ ЕЩЁ РАЗ</button>
-        <button id="menuBtn">В МЕНЮ</button>
+        <button id="restartBtn">Play again</button>
+        <button id="menuBtn">Back to map</button>
       </div>
     </div>
   </div>
@@ -192,9 +206,6 @@
     const canvas = document.getElementById('game');
     const ctx = canvas.getContext('2d');
     ctx.imageSmoothingEnabled = false;
-    ctx.webkitImageSmoothingEnabled = false;
-    ctx.mozImageSmoothingEnabled = false;
-    ctx.msImageSmoothingEnabled = false;
 
     const ui = {
       hud: document.getElementById('hud'),
@@ -225,20 +236,20 @@
     const ATTACK_DAMAGE = 17;
     const ENEMY_CONTACT_DAMAGE = 12;
     const MAX_DELTA_TIME = 0.033;
-    const MUSIC_NOTE_INTERVAL_MS = 190;
+    const MUSIC_NOTE_INTERVAL_MS = 210;
     const keys = new Set();
     const touchState = { up:false, down:false, left:false, right:false, attack:false, dash:false };
     const state = {
       screen: 'menu',
       soundOn: true,
       time: 0,
-      message: { text: '', timer: 0 },
+      message: { timer: 0 },
       player: null,
       enemies: [],
-      sigils: [],
+      relics: [],
       particles: [],
       gate: null,
-      altar: null
+      town: null
     };
 
     const mapRows = [
@@ -265,6 +276,15 @@
     ];
     const map = mapRows.map(row => row.split(''));
 
+    function tileToWorld(symbol) {
+      for (let y = 0; y < map.length; y++) {
+        for (let x = 0; x < map[y].length; x++) {
+          if (map[y][x] === symbol) return { x: x * TILE, y: y * TILE };
+        }
+      }
+      return null;
+    }
+
     function svgData(svg) {
       return 'data:image/svg+xml;utf8,' + encodeURIComponent(svg);
     }
@@ -285,11 +305,11 @@
 
     const assets = {
       hero: new Image(),
-      wisp: new Image(),
-      altar: new Image(),
-      sigil: new Image(),
+      monster: new Image(),
+      town: new Image(),
+      relic: new Image(),
       gate: new Image(),
-      attack: new Image()
+      slash: new Image()
     };
 
     assets.hero.src = pixelSprite([
@@ -297,67 +317,85 @@
       '..1221..',
       '..1331..',
       '.144441.',
-      '.145541.',
-      '.166661.',
-      '..6..6..',
-      '.7....7.'
-    ], { '1':'#f4d7b7', '2':'#eed09f', '3':'#1f1631', '4':'#8c6cff', '5':'#d9c5ff', '6':'#4e3b7a', '7':'#53d58d' });
+      '.455554.',
+      '.466664.',
+      '..67.76.',
+      '.8....8.'
+    ], { '1':'#f4d7b7', '2':'#ebc58f', '3':'#4a2f22', '4':'#bf4338', '5':'#d6b96d', '6':'#7f8b9f', '7':'#ece5c9', '8':'#47372a' });
 
-    assets.wisp.src = pixelSprite([
+    assets.monster.src = pixelSprite([
       '..11..',
       '.1221.',
       '123321',
-      '123321',
-      '.1441.',
-      '..11..'
-    ], { '1':'#9da8ff', '2':'#c3c9ff', '3':'#ffffff', '4':'#6236d8' });
+      '124421',
+      '.1551.',
+      '..66..'
+    ], { '1':'#6f3130', '2':'#b14a39', '3':'#f59a59', '4':'#ffd06e', '5':'#5f1c17', '6':'#2d1010' });
 
-    assets.altar.src = pixelSprite([
+    assets.town.src = pixelSprite([
       '..1111..',
-      '..1221..',
+      '.122221.',
       '.123321.',
-      '11244211',
-      '15555551',
-      '.166661.',
-      '.177771.',
+      '14444441',
+      '15566551',
+      '17777771',
+      '.188881.',
       '..1111..'
-    ], { '1':'#3c3154', '2':'#b7a0ff', '3':'#efe7ff', '4':'#53d58d', '5':'#20172e', '6':'#6f53b8', '7':'#18111f' }, 5);
+    ], { '1':'#786143', '2':'#b8955c', '3':'#d9c89e', '4':'#7d8ea3', '5':'#314050', '6':'#cb6c42', '7':'#506b3f', '8':'#223225' }, 5);
 
-    assets.sigil.src = pixelSprite([
-      '..1..',
-      '.121.',
-      '12321',
-      '.121.',
-      '..1..'
-    ], { '1':'#ffd35c', '2':'#fff4ba', '3':'#ffffff' }, 5);
+    assets.relic.src = pixelSprite([
+      '..11...',
+      '..21...',
+      '1123331',
+      '.12421.',
+      '.12521.',
+      '..151..',
+      '..151..'
+    ], { '1':'#d1a14d', '2':'#c43f35', '3':'#f2de9b', '4':'#fffaf0', '5':'#9f2b2a' }, 5);
 
     assets.gate.src = pixelSprite([
       '.111111.',
       '12222221',
       '12333321',
+      '12344321',
       '12300321',
       '12300321',
-      '12333321',
       '12222221',
       '.111111.'
-    ], { '1':'#8b73d1', '2':'#3b2e5d', '3':'#1b1429', '0':'#53d58d' }, 5);
+    ], { '1':'#c3aa71', '2':'#7b6850', '3':'#3a4a5b', '4':'#d2c6a0', '0':'#73c27c' }, 5);
 
-    assets.attack.src = pixelSprite([
-      '...1....',
-      '..12....',
-      '.123....',
-      '1234....',
-      '.123....',
-      '..12....',
-      '...1....'
-    ], { '1':'#fff7cc', '2':'#ffe38a', '3':'#ffb347', '4':'#ffffff' }, 5);
+    assets.slash.src = pixelSprite([
+      '....1...',
+      '...12...',
+      '..1234..',
+      '.123455.',
+      '..1234..',
+      '...12...',
+      '....1...'
+    ], { '1':'#fff7cf', '2':'#f9e67c', '3':'#d7eef7', '4':'#8cb0c9', '5':'#ffffff' }, 5);
+
+    function spawnEnemy(tx, ty) {
+      return {
+        x: tx * TILE + 4,
+        y: ty * TILE + 4,
+        size: 24,
+        hp: 30,
+        speed: 68 + Math.random() * 18,
+        phase: Math.random() * Math.PI * 2,
+        attackCd: 0,
+        dead: false
+      };
+    }
 
     function resetGame() {
+      const startTile = tileToWorld('S') || { x: 4 * TILE, y: 17 * TILE };
+      const townTile = tileToWorld('A') || { x: 12 * TILE, y: 17 * TILE };
+      const gateTile = tileToWorld('G') || { x: 18 * TILE, y: TILE };
       state.time = 0;
       state.message.timer = 0;
       state.player = {
-        x: 4 * TILE,
-        y: 17 * TILE,
+        x: startTile.x,
+        y: startTile.y,
         size: 26,
         speed: 145,
         hp: 100,
@@ -368,6 +406,7 @@
         attackTimer: 0,
         dashTimer: 0,
         hitCooldown: 0,
+        townCooldown: 0,
         collected: 0
       };
       state.enemies = [
@@ -376,33 +415,19 @@
         spawnEnemy(7, 11),
         spawnEnemy(11, 15)
       ];
-      state.sigils = [
+      state.relics = [
         { x: 9 * TILE + 6, y: 3 * TILE + 6, collected: false, glow: 0 },
         { x: 15 * TILE + 6, y: 7 * TILE + 6, collected: false, glow: 1.8 },
         { x: 5 * TILE + 6, y: 13 * TILE + 6, collected: false, glow: 3.4 }
       ];
       state.particles = [];
-      state.gate = { x: 18 * TILE, y: TILE, open: false };
-      state.altar = { x: 12 * TILE, y: 17 * TILE };
-      showMessage('Собери все сигилы и иди к северным вратам.');
+      state.gate = { x: gateTile.x, y: gateTile.y, open: false };
+      state.town = { x: townTile.x, y: townTile.y };
+      showMessage('Seize all relic banners, then ride north into the keep.');
       updateHud();
     }
 
-    function spawnEnemy(tx, ty) {
-      return {
-        x: tx * TILE + 4,
-        y: ty * TILE + 4,
-        size: 24,
-        hp: 30,
-        speed: 70 + Math.random() * 18,
-        phase: Math.random() * Math.PI * 2,
-        attackCd: 0,
-        dead: false
-      };
-    }
-
     function showMessage(text) {
-      state.message.text = text;
       state.message.timer = 2.4;
       ui.message.textContent = text;
       ui.message.classList.add('show');
@@ -422,15 +447,17 @@
       ui.hud.classList.add('hidden');
       ui.touch.classList.add('hidden');
       ui.message.classList.remove('show');
+      stopMusic();
     }
 
     function finishGame(win) {
       state.screen = 'result';
       ui.result.classList.remove('hidden');
-      ui.resultTitle.textContent = win ? 'ПОБЕДА' : 'ПАДЕНИЕ';
+      ui.resultTitle.textContent = win ? 'VICTORY' : 'DEFEAT';
       ui.resultText.textContent = win
-        ? `Ты собрал ${state.player.collected} сигилов, удержал Ланчин и добрался до врат за ${state.time.toFixed(1)} секунд.`
-        : `Тени прорвали дозор. Собрано сигилов: ${state.player.collected}/3. Попробуй ещё раз и держи дистанцию.`;
+        ? `You claimed ${state.player.collected} relic banners and retook the border keep in ${state.time.toFixed(1)} days.`
+        : `Your army broke before Dawnwatch could answer. Relic banners: ${state.player.collected}/3. Try again and keep moving.`;
+      stopMusic();
     }
 
     function updateHud() {
@@ -450,7 +477,7 @@
     }
 
     function blocksGate(tx, ty) {
-      return !state.gate.open && tx === 18 && ty === 1;
+      return !state.gate.open && tx === Math.round(state.gate.x / TILE) && ty === Math.round(state.gate.y / TILE);
     }
 
     function canMoveTo(x, y, size) {
@@ -468,10 +495,56 @@
       });
     }
 
+    function rectsOverlap(ax, ay, aw, ah, bx, by, bw, bh) {
+      return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by;
+    }
+
     function axisFromInput() {
       const x = (keys.has('ArrowRight') || keys.has('KeyD') || touchState.right ? 1 : 0) - (keys.has('ArrowLeft') || keys.has('KeyA') || touchState.left ? 1 : 0);
       const y = (keys.has('ArrowDown') || keys.has('KeyS') || touchState.down ? 1 : 0) - (keys.has('ArrowUp') || keys.has('KeyW') || touchState.up ? 1 : 0);
       return { x, y };
+    }
+
+    function burst(x, y, color, amount) {
+      for (let i = 0; i < amount; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 30 + Math.random() * 90;
+        state.particles.push({
+          x, y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          life: 0.5 + Math.random() * 0.45,
+          ttl: 0.5 + Math.random() * 0.45,
+          color
+        });
+      }
+    }
+
+    function performAttack() {
+      const p = state.player;
+      const originX = p.x + p.size / 2;
+      const originY = p.y + p.size / 2;
+      let hit = false;
+      for (const enemy of state.enemies) {
+        if (enemy.dead) continue;
+        const ex = enemy.x + enemy.size / 2;
+        const ey = enemy.y + enemy.size / 2;
+        const dx = ex - originX;
+        const dy = ey - originY;
+        const forward = p.facing === 'right' ? dx : p.facing === 'left' ? -dx : p.facing === 'down' ? dy : -dy;
+        const side = p.facing === 'left' || p.facing === 'right' ? Math.abs(dy) : Math.abs(dx);
+        if (forward > -8 && forward < ATTACK_REACH && side < ATTACK_SIDE) {
+          enemy.hp -= ATTACK_DAMAGE;
+          enemy.phase += 0.7;
+          burst(ex, ey, '#fff9dd', 6);
+          hit = true;
+          if (enemy.hp <= 0) {
+            enemy.dead = true;
+            burst(ex, ey, '#ffa467', 14);
+          }
+        }
+      }
+      if (state.soundOn) playSfx(hit ? [340, 220] : [160, 120], 0.05, 'square', 0.03);
     }
 
     function updatePlayer(dt) {
@@ -479,6 +552,7 @@
       p.attackTimer = Math.max(0, p.attackTimer - dt);
       p.dashTimer = Math.max(0, p.dashTimer - dt);
       p.hitCooldown = Math.max(0, p.hitCooldown - dt);
+      p.townCooldown = Math.max(0, p.townCooldown - dt);
       p.mana = Math.min(p.maxMana, p.mana + dt * 9);
 
       const axis = axisFromInput();
@@ -500,8 +574,8 @@
         p.dashTimer = DASH_TIME;
         p.mana -= DASH_COST;
         touchState.dash = false;
-        burst(p.x + p.size / 2, p.y + p.size / 2, '#b8a6ff', 10);
-        if (state.soundOn) playSfx([240, 360, 200], 0.08, 'triangle', 0.04);
+        burst(p.x + p.size / 2, p.y + p.size / 2, '#b7d3ff', 10);
+        if (state.soundOn) playSfx([250, 360, 220], 0.08, 'triangle', 0.04);
       }
 
       if ((keys.has('Space') || keys.has('Enter') || touchState.attack) && p.attackTimer === 0) {
@@ -510,55 +584,35 @@
         performAttack();
       }
 
-      for (const sigil of state.sigils) {
-        if (!sigil.collected && rectsOverlap(p.x, p.y, p.size, p.size, sigil.x, sigil.y, 20, 20)) {
-          sigil.collected = true;
+      for (const relic of state.relics) {
+        if (!relic.collected && rectsOverlap(p.x, p.y, p.size, p.size, relic.x, relic.y, 20, 20)) {
+          relic.collected = true;
           p.collected += 1;
           p.mana = Math.min(p.maxMana, p.mana + 20);
-          burst(sigil.x + 10, sigil.y + 10, '#ffe28c', 16);
+          burst(relic.x + 10, relic.y + 10, '#ffe28c', 16);
           if (state.soundOn) playSfx([620, 780, 930], 0.08, 'triangle', 0.05);
-          showMessage(`Сигил ${p.collected}/3 получен.`);
+          showMessage(`Relic banner ${p.collected}/3 claimed.`);
           if (p.collected === 3) {
             state.gate.open = true;
-            showMessage('Все сигилы собраны. Северные врата открыты.');
+            showMessage('All relic banners claimed. The border keep is open.');
           }
         }
+      }
+
+      if (state.town && p.townCooldown === 0 && rectsOverlap(p.x, p.y, p.size, p.size, state.town.x, state.town.y, 32, 32)) {
+        p.hp = Math.min(p.maxHp, p.hp + 22);
+        p.mana = Math.min(p.maxMana, p.mana + 36);
+        p.townCooldown = 3.5;
+        burst(state.town.x + 16, state.town.y + 16, '#f6de95', 12);
+        showMessage('Dawnwatch restores your army and spellbook.');
+        if (state.soundOn) playSfx([430, 540, 680], 0.08, 'triangle', 0.04);
       }
 
       if (state.gate.open && rectsOverlap(p.x, p.y, p.size, p.size, state.gate.x + 2, state.gate.y + 2, 28, 28)) {
         finishGame(true);
       }
 
-      if (p.hp <= 0) {
-        finishGame(false);
-      }
-    }
-
-    function performAttack() {
-      const p = state.player;
-      const originX = p.x + p.size / 2;
-      const originY = p.y + p.size / 2;
-      let hit = false;
-      for (const enemy of state.enemies) {
-        if (enemy.dead) continue;
-        const ex = enemy.x + enemy.size / 2;
-        const ey = enemy.y + enemy.size / 2;
-        const dx = ex - originX;
-        const dy = ey - originY;
-        const forward = p.facing === 'right' ? dx : p.facing === 'left' ? -dx : p.facing === 'down' ? dy : -dy;
-        const side = p.facing === 'left' || p.facing === 'right' ? Math.abs(dy) : Math.abs(dx);
-        if (forward > -8 && forward < ATTACK_REACH && side < ATTACK_SIDE) {
-          enemy.hp -= ATTACK_DAMAGE;
-          enemy.phase += 0.7;
-          burst(ex, ey, '#ffffff', 6);
-          hit = true;
-          if (enemy.hp <= 0) {
-            enemy.dead = true;
-            burst(ex, ey, '#8ab4ff', 14);
-          }
-        }
-      }
-      if (state.soundOn) playSfx(hit ? [340, 210] : [160, 120], 0.05, 'square', 0.03);
+      if (p.hp <= 0) finishGame(false);
     }
 
     function updateEnemies(dt) {
@@ -567,8 +621,8 @@
         if (enemy.dead) continue;
         enemy.phase += dt * 3;
         enemy.attackCd = Math.max(0, enemy.attackCd - dt);
-        const dx = (p.x - enemy.x);
-        const dy = (p.y - enemy.y);
+        const dx = p.x - enemy.x;
+        const dy = p.y - enemy.y;
         const dist = Math.hypot(dx, dy) || 1;
         const vx = dx / dist * enemy.speed * dt;
         const vy = dy / dist * enemy.speed * dt;
@@ -588,24 +642,9 @@
           p.hitCooldown = 0.85;
           enemy.attackCd = 0.8;
           burst(p.x + p.size / 2, p.y + p.size / 2, '#ff7a7a', 12);
-          showMessage('Тень задела дозорного.');
+          showMessage('Neutral monsters strike your army.');
           if (state.soundOn) playSfx([180, 130, 90], 0.07, 'sawtooth', 0.05);
         }
-      }
-    }
-
-    function burst(x, y, color, amount) {
-      for (let i = 0; i < amount; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = 30 + Math.random() * 90;
-        state.particles.push({
-          x, y,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          life: 0.5 + Math.random() * 0.45,
-          ttl: 0.5 + Math.random() * 0.45,
-          color
-        });
       }
     }
 
@@ -620,48 +659,67 @@
       });
     }
 
-    function rectsOverlap(ax, ay, aw, ah, bx, by, bw, bh) {
-      return ax < bx + bw && ax + aw > bx && ay < by + bh && ay + ah > by;
-    }
-
     function drawWorld() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (let y = 0; y < WORLD; y++) {
         for (let x = 0; x < WORLD; x++) {
-          const wall = map[y][x] === '#';
-          ctx.fillStyle = wall ? ((x + y) % 2 ? '#2b2140' : '#342750') : ((x + y) % 2 ? '#160f22' : '#130d1d');
+          const tile = map[y][x];
+          const wall = tile === '#';
+          const noise = (x * 13 + y * 17) % 5;
+          ctx.fillStyle = wall ? ((x + y) % 2 ? '#566475' : '#708091') : ((x + y) % 2 ? '#55713c' : '#658648');
           ctx.fillRect(x * TILE, y * TILE, TILE, TILE);
           if (wall) {
-            ctx.fillStyle = '#5a45a0';
-            ctx.fillRect(x * TILE, y * TILE, TILE, 5);
-            ctx.fillStyle = '#20172e';
-            ctx.fillRect(x * TILE + 4, y * TILE + 9, 8, 8);
+            ctx.fillStyle = '#d7dfe5';
+            ctx.fillRect(x * TILE, y * TILE, TILE, 4);
+            ctx.fillStyle = '#3b4857';
+            ctx.fillRect(x * TILE + 4, y * TILE + 8, 10, 9);
+            ctx.fillRect(x * TILE + 18, y * TILE + 13, 8, 10);
+            ctx.fillStyle = '#82909c';
+            ctx.fillRect(x * TILE + 1, y * TILE + 18, TILE - 2, 11);
           } else {
-            ctx.fillStyle = 'rgba(112,88,170,0.10)';
-            ctx.fillRect(x * TILE + 2, y * TILE + 2, TILE - 4, TILE - 4);
+            ctx.fillStyle = noise % 2 ? '#7b5d37' : '#c49d65';
+            if ((x === 1 && y > 4) || (y === 17 && x < 6) || (x === 12 && y > 13) || (x === 18 && y < 4)) {
+              ctx.fillRect(x * TILE + 8, y * TILE + 12, 16, 8);
+              ctx.fillRect(x * TILE + 10, y * TILE + 8, 12, 16);
+            } else if (noise === 0) {
+              ctx.fillRect(x * TILE + 5, y * TILE + 7, 4, 4);
+              ctx.fillRect(x * TILE + 16, y * TILE + 18, 3, 3);
+              ctx.fillStyle = '#88ab5f';
+              ctx.fillRect(x * TILE + 20, y * TILE + 8, 4, 4);
+            } else if (noise === 1) {
+              ctx.fillStyle = '#3b5a2b';
+              ctx.fillRect(x * TILE + 22, y * TILE + 7, 4, 10);
+              ctx.fillRect(x * TILE + 20, y * TILE + 5, 8, 4);
+            }
+            if (tile === 'S') {
+              ctx.fillStyle = '#c43f35';
+              ctx.fillRect(x * TILE + 10, y * TILE + 5, 12, 16);
+              ctx.fillStyle = '#f2deb0';
+              ctx.fillRect(x * TILE + 13, y * TILE + 8, 6, 6);
+            }
           }
         }
       }
 
-      const altarBob = Math.sin(state.time * 2) * 2;
-      ctx.drawImage(assets.altar, state.altar.x - 8, state.altar.y - 10 + altarBob, 48, 48);
+      const townBob = Math.sin(state.time * 2) * 2;
+      ctx.drawImage(assets.town, state.town.x - 8, state.town.y - 10 + townBob, 48, 48);
 
-      for (const sigil of state.sigils) {
-        if (sigil.collected) continue;
-        sigil.glow += 0.04;
-        const bob = Math.sin(state.time * 4 + sigil.glow) * 3;
+      for (const relic of state.relics) {
+        if (relic.collected) continue;
+        relic.glow += 0.04;
+        const bob = Math.sin(state.time * 4 + relic.glow) * 3;
         ctx.globalAlpha = 0.28;
-        ctx.fillStyle = '#ffdc75';
+        ctx.fillStyle = '#ffd56d';
         ctx.beginPath();
-        ctx.arc(sigil.x + 10, sigil.y + 10 + bob, 14, 0, Math.PI * 2);
+        ctx.arc(relic.x + 10, relic.y + 10 + bob, 14, 0, Math.PI * 2);
         ctx.fill();
         ctx.globalAlpha = 1;
-        ctx.drawImage(assets.sigil, sigil.x, sigil.y + bob, 20, 20);
+        ctx.drawImage(assets.relic, relic.x, relic.y + bob, 20, 20);
       }
 
       const gateGlow = state.gate.open ? 0.8 + Math.sin(state.time * 5) * 0.2 : 0.3;
       ctx.globalAlpha = gateGlow;
-      ctx.fillStyle = state.gate.open ? '#63f1a4' : '#8c7cc5';
+      ctx.fillStyle = state.gate.open ? '#6fd58e' : '#d0bd89';
       ctx.fillRect(state.gate.x + 8, state.gate.y + 2, 16, 28);
       ctx.globalAlpha = 1;
       ctx.drawImage(assets.gate, state.gate.x - 8, state.gate.y - 8, 48, 48);
@@ -672,17 +730,17 @@
       for (const enemy of state.enemies) {
         if (enemy.dead) continue;
         const bob = Math.sin(enemy.phase) * 2;
-        ctx.globalAlpha = 0.2;
-        ctx.fillStyle = '#94a0ff';
+        ctx.globalAlpha = 0.22;
+        ctx.fillStyle = '#8b352a';
         ctx.beginPath();
         ctx.arc(enemy.x + 12, enemy.y + 18, 16, 0, Math.PI * 2);
         ctx.fill();
         ctx.globalAlpha = 1;
-        ctx.drawImage(assets.wisp, enemy.x, enemy.y + bob, 24, 24);
+        ctx.drawImage(assets.monster, enemy.x, enemy.y + bob, 24, 24);
         if (enemy.hp < 30) {
-          ctx.fillStyle = '#161022';
+          ctx.fillStyle = '#21160f';
           ctx.fillRect(enemy.x, enemy.y - 7, 24, 4);
-          ctx.fillStyle = '#85a0ff';
+          ctx.fillStyle = '#ef9a63';
           ctx.fillRect(enemy.x + 1, enemy.y - 6, (enemy.hp / 30) * 22, 2);
         }
       }
@@ -693,7 +751,8 @@
 
       if (p.attackTimer > 0) {
         const attackSize = 42;
-        let ax = p.x, ay = p.y;
+        let ax = p.x;
+        let ay = p.y;
         if (p.facing === 'right') ax += 20;
         if (p.facing === 'left') ax -= 20;
         if (p.facing === 'down') ay += 20;
@@ -703,8 +762,8 @@
         if (p.facing === 'down') ctx.rotate(Math.PI / 2);
         if (p.facing === 'left') ctx.rotate(Math.PI);
         if (p.facing === 'up') ctx.rotate(-Math.PI / 2);
-        ctx.globalAlpha = 0.9;
-        ctx.drawImage(assets.attack, -21, -21, attackSize, attackSize);
+        ctx.globalAlpha = 0.92;
+        ctx.drawImage(assets.slash, -21, -21, attackSize, attackSize);
         ctx.restore();
       }
     }
@@ -758,9 +817,9 @@
     let musicTick = 0;
     const melody = [
       [392,0.18],[523.25,0.18],[587.33,0.18],[698.46,0.34],
-      [587.33,0.18],[523.25,0.18],[440,0.22],[392,0.22],
-      [392,0.18],[523.25,0.18],[659.25,0.18],[783.99,0.34],
-      [698.46,0.18],[587.33,0.18],[523.25,0.22],[440,0.34]
+      [523.25,0.18],[493.88,0.18],[440,0.22],[392,0.22],
+      [440,0.18],[523.25,0.18],[587.33,0.18],[659.25,0.34],
+      [587.33,0.18],[523.25,0.18],[493.88,0.22],[392,0.34]
     ];
 
     function ensureAudio() {
@@ -772,7 +831,7 @@
         if (audioCtx.state === 'suspended') audioCtx.resume();
       } catch (_) {
         state.soundOn = false;
-        ui.soundBtn.textContent = 'ЗВУК: НЕТ';
+        ui.soundBtn.textContent = 'Sound: off';
         return null;
       }
       return audioCtx;
@@ -830,11 +889,11 @@
     document.getElementById('restartBtn').addEventListener('click', startGame);
     document.getElementById('menuBtn').addEventListener('click', showMenu);
     document.getElementById('howBtn').addEventListener('click', () => {
-      showMessage('Собери 3 сигила, отбивайся пробелом и рывком уходи от теней.');
+      showMessage('Claim 3 relic banners, slash with Space, charge with Shift, and touch Dawnwatch to recover.');
     });
     ui.soundBtn.addEventListener('click', () => {
       state.soundOn = !state.soundOn;
-      ui.soundBtn.textContent = `ЗВУК: ${state.soundOn ? 'ВКЛ' : 'ВЫКЛ'}`;
+      ui.soundBtn.textContent = `Sound: ${state.soundOn ? 'on' : 'off'}`;
       if (!state.soundOn) stopMusic();
       else if (state.screen === 'playing') startMusic();
     });
